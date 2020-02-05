@@ -1,6 +1,7 @@
 import pandas as pd
-import os
+import sys
 from math import sqrt
+import argparse
 
 
 names_translations = {
@@ -152,10 +153,10 @@ def read_ndt(file):
 
 
 def _convert_p_nom(row, element=None):
-    if element is "generator":
+    if element == "generator":
         sign = -1
         unit_convert = 1
-    elif element is "load":
+    elif element == "load":
         sign = 1
         unit_convert = 1e-3
 
@@ -193,15 +194,10 @@ def print_data_info(lines, buses):
     print("N/A buses: ", buses.index.isna().sum())
 
 
-if __name__== "__main__":
-
-    # Define file names
-    edt_filename = "10kV_ELE_vorlage_1Sa.edt.txt"
-    ndt_filename = "10kV_ELE_vorlage_1Sa.ndt.txt"
-
+def neplan2pypsa(edt_file, ndt_file, verbose=False):
     # read data files
-    lines = read_edt(edt_filename)
-    buses, loads, generators = read_ndt(ndt_filename)
+    lines = read_edt(edt_file)
+    buses, loads, generators = read_ndt(ndt_file)
 
     # Save element and node data to file
     lines.to_csv("lines.csv", index=False)
@@ -210,6 +206,32 @@ if __name__== "__main__":
     generators.to_csv("generators.csv", index=False)
 
     # Print information about read data
-    print_data_info(lines, buses)
+    if verbose:
+        print_data_info(lines, buses)
 
 
+def cli():
+    parser = argparse.ArgumentParser(
+        description="Convert NEPLAN data to PyPSA format",
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+
+    parser.add_argument('-e', '--edt',
+                        type=str,
+                        help="Path to .edt file")
+    parser.add_argument('-n', '--ndt',
+                        type=str,
+                        help="Path to .ndt file")
+    parser.add_argument('-v', '--verbose',
+                        action='store_true',
+                        help="Print info about data")
+
+    args = parser.parse_args(sys.argv[1:])
+
+    neplan2pypsa(
+        args.edt,
+        args.ndt,
+        verbose=args.verbose)
+
+
+if __name__== "__main__":
+    pass
