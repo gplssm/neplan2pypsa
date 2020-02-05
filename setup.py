@@ -15,6 +15,10 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
+# Get requirements
+with open(path.join(here,'requirements.txt')) as f:
+    requirements = f.read().splitlines()
+
 # Arguments marked as "Required" below must be included for upload to PyPI.
 # Fields marked as "Optional" may be commented out.
 
@@ -30,7 +34,7 @@ setup(
     # There are some restrictions on what makes a valid project name
     # specification here:
     # https://packaging.python.org/specifications/core-metadata/#name
-    name="rli_template",  # Required
+    name="neplan2pypsa",  # Required
     # Versions should comply with PEP 440:
     # https://www.python.org/dev/peps/pep-0440/
     #
@@ -66,10 +70,10 @@ setup(
     #
     # This field corresponds to the "Home-Page" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#home-page-optional
-    url="https://github.com/rl-institut/rli_template",  # Optional
+    url="https://github.com/gplssm/neplan2pypsa",  # Optional
     # This should be your name or the name of the organization which owns the
     # project.
-    author="Reiner Lemoine Institut",  # Optional
+    author="gplssm",  # Optional
     # This should be a valid email address corresponding to the author listed
     # above.
     # author_email='pypa-dev@googlegroups.com',  # Optional
@@ -91,8 +95,6 @@ setup(
         # that you indicate whether you support Python 2, Python 3 or both.
         # These classifiers are *not* checked by 'pip install'. See instead
         # 'python_requires' below.
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
@@ -112,22 +114,22 @@ setup(
     # the `py_modules` argument instead as follows, which will expect a file
     # called `my_module.py` to exist:
     #
-    #   py_modules=["my_module"],
+    py_modules=["neplan2pypsa"],
     #
-    packages=find_packages(where="src"),  # Required
+    # packages=find_packages(where="src"),  # Required
     # Specify which Python versions you support. In contrast to the
     # 'Programming Language' classifiers above, 'pip install' will check this
     # and refuse to install the project if the version does not match. If you
     # do not support Python 2, you can simplify this to '>=3.5' or similar, see
     # https://packaging.python.org/guides/distributing-packages-using-setuptools/#python-requires
-    python_requires=">=3, <4",
+    python_requires=">=3.6, <4",
     # This field lists other packages that your project depends on to run.
     # Any package you put here will be installed by pip when your project is
     # installed, so they must be valid existing projects.
     #
     # For an analysis of "install_requires" vs pip's requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=[],  # Optional
+    install_requires=[requirements],  # Optional
     # List additional groups of dependencies here (e.g. development
     # dependencies). Users will be able to install these using the "extras"
     # syntax, for example:
@@ -173,7 +175,7 @@ setup(
     # maintainers, and where to support the project financially. The key is
     # what's used to render the link text on PyPI.
     project_urls={  # Optional
-        "Bug Reports": "https://github.com/rl-institut/rli_template/issues",
-        "Source": "https://github.com/rl-institut/rli_template",
+        "Bug Reports": "https://github.com/gplssm/neplan2pypsa/issues",
+        "Source": "https://github.com/gplssm/neplan2pypsa",
     },
 )

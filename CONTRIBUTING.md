@@ -45,30 +45,8 @@ it through first).
     ```
     If your branch does not exist on the remote server yet, git will provide you with instructions, simply follow them.
 
-
-#### Step 3: Run tests locally
-
-To run tests locally, install the dependencies 
-```bash 
-pip install -r tests/test_requirements.txt 
-```
-
-1. Integration/unit tests 
-    ```bash
-    pytest tests
-    ```
-2.  Linting tests
-    ```bash
-    flake8
-    ```
-    and
-    ```bash
-    pylint
-    ```
-    You can fix the linting errors either manually or with the packages
-    `autopep8` or `black` for example.
     
-#### Step 4: Submit a pull request (PR)
+#### Step 3: Submit a pull request (PR)
 
 Follow the [steps](https://help.github.com/en/articles/creating-a-pull-request) of the github help to create the PR.
 Please note that you PR should be directed from your branch (for example `myfeature`) towards the branch `dev`.
@@ -81,7 +59,7 @@ your repository.
 is a list of other keywords you can use to automatically close the
 issues
 
-#### Step 5: Setup continuous integration
+#### Step 4: Setup continuous integration
 
 To have the test run automatically everytime you push to a pull request
 you can add the bash commands under `# command to run tests` of the
