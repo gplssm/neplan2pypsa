@@ -37,6 +37,11 @@ def read_edt(file):
             "length": "r20",
             "num_parallel": "r15",
             "type_info": "c6"}
+    switches_trans = {
+        "name": "c4",
+        "bus_open": "c1",
+        "bus_closed": "c2",
+    }
 
     edt = pd.read_csv(file,
                       sep="\t",
@@ -45,22 +50,29 @@ def read_edt(file):
                       dtype={"r7": float},
                       decimal=",")
 
-    # Select all lines
+    # Select all lines, switches, transformers
     lines_slice = edt[edt["id"] == 1]
+    switches_slice = edt[edt["id"].isin([8, 9])]
 
     # Only "entire lines" not its segments
     lines_slice = lines_slice[~lines_slice[["c1", "c2"]].isna().any(axis=1)]
 
     # Rename easily translatable fields
     lines = lines_slice[list(lines_trans.values())].rename(columns={v: k for k, v in lines_trans.items()})
+    switches = switches_slice[list(switches_trans.values())].rename(
+        columns={v: k for k, v in switches_trans.items()})
 
-    # Add more fields that require calculations
+    # Add more fields for lines that require calculations
     lines["r"] = lines_slice["r11"] * lines_slice["r20"]
     lines["x"] = lines_slice["r8"] * lines_slice["r20"]
     lines["s_nom"] = sqrt(3) * lines_slice["r7"] * lines_slice["r1"]
     lines["kind"] = ""
 
-    return lines
+    # Add more fields for lines that require calculations
+    switches["type_info"] = "Disconnect/load switch"
+    switches["branch"] = "#TODO"
+
+    return lines, switches
 
 
 def read_ndt(file):
@@ -196,11 +208,12 @@ def print_data_info(lines, buses):
 
 def neplan2pypsa(edt_file, ndt_file, verbose=False):
     # read data files
-    lines = read_edt(edt_file)
+    lines, switches = read_edt(edt_file)
     buses, loads, generators = read_ndt(ndt_file)
 
     # Save element and node data to file
     lines.to_csv("lines.csv", index=False)
+    switches.to_csv("switches.csv", index=False)
     buses.to_csv("buses.csv")
     loads.to_csv("loads.csv", index=False)
     generators.to_csv("generators.csv", index=False)
