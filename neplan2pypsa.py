@@ -206,17 +206,17 @@ def print_data_info(lines, buses):
     print("N/A buses: ", buses.index.isna().sum())
 
 
-def neplan2pypsa(edt_file, ndt_file, verbose=False):
+def neplan2pypsa(edt_file, ndt_file, csv_dir, verbose=False):
     # read data files
     lines, switches = read_edt(edt_file)
     buses, loads, generators = read_ndt(ndt_file)
 
     # Save element and node data to file
-    lines.to_csv("lines.csv", index=False)
-    switches.to_csv("switches.csv", index=False)
-    buses.to_csv("buses.csv")
-    loads.to_csv("loads.csv", index=False)
-    generators.to_csv("generators.csv", index=False)
+    lines.to_csv(os.path.join(csv_dir, "lines.csv"), index=False)
+    switches.to_csv(os.path.join(csv_dir, "switches.csv"), index=False)
+    buses.to_csv(os.path.join(csv_dir, "buses.csv"))
+    loads.to_csv(os.path.join(csv_dir, "loads.csv"), index=False)
+    generators.to_csv(os.path.join(csv_dir, "generators.csv"), index=True)
 
     # Print information about read data
     if verbose:
@@ -234,6 +234,10 @@ def cli():
     parser.add_argument('-n', '--ndt',
                         type=str,
                         help="Path to .ndt file")
+    parser.add_argument('--csv-dir',
+                        type=str,
+                        default="",
+                        help="Save path of created CSV files. Defaults to CWD")
     parser.add_argument('-v', '--verbose',
                         action='store_true',
                         help="Print info about data")
@@ -243,6 +247,7 @@ def cli():
     neplan2pypsa(
         args.edt,
         args.ndt,
+        args.csv_dir,
         verbose=args.verbose)
 
 
