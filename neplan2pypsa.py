@@ -2,6 +2,7 @@ import pandas as pd
 import sys
 from math import sqrt
 import argparse
+import os
 
 
 names_translations = {
@@ -141,7 +142,7 @@ def read_ndt(file):
     buses["y"] = ""
     buses["mv_grid_id"] = ""
     buses["lv_grid_id"] = ""
-    buses["in_building"] = ""
+    buses["in_building"] = False
     buses["v_nom"] = 10
     buses.replace({'control': control_trans}, inplace=True)
     buses.replace({'voltage level': {"T": "high voltage", "F": "low voltage"}}, inplace=True)
