@@ -146,6 +146,7 @@ def read_ndt(file):
     buses["v_nom"] = 10
     buses.replace({'control': control_trans}, inplace=True)
     buses.replace({'voltage level': {"T": "high voltage", "F": "low voltage"}}, inplace=True)
+    buses.drop(buses[buses["control"] == "Slack"].index, inplace=True)
 
     # Test if all load and generator data find buses to join
     joinable_load = load.join(buses, on="c1", how="left", rsuffix="bus")
